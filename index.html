@@ -96,6 +96,8 @@
     <div class="row two">
       <div><label>휴대폰번호 *</label><input id="guardian_phone" placeholder="010-1234-5678"></div>
       <div><label>대리인번호(선택)</label><input id="delegate_phone" placeholder="010-0000-0000"></div>
+      <label>주소 *</label>
+<input id="address" placeholder="예: 인천 서구 염곡로498번안길 16-1 (상세주소 포함)">
     </div>
     <label>특이사항(선택)</label><textarea id="notes" placeholder="추가 요청사항"></textarea>
   </div>
@@ -170,7 +172,7 @@
   document.getElementById("submitBtn").onclick = async () => {
     const status = document.getElementById("status");
 
-    if(!v("dog_name") || !v("guardian_phone")){
+    if(!v("dog_name") || !v("guardian_phone") || !v("address")){
       status.innerHTML = `<span class="bad">강아지 이름 / 보호자 번호는 필수입니다.</span>`;
       return;
     }
@@ -201,6 +203,8 @@
       sns_consent: c("sns_consent"),
       separation_request: c("separation_request"),
       signature_png_base64: signature
+      address: v("address"),
+
     };
 
     try{
@@ -222,3 +226,4 @@
 </script>
 </body>
 </html>
+
