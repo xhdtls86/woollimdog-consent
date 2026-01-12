@@ -173,8 +173,8 @@
     const status = document.getElementById("status");
 
     if(!v("dog_name") || !v("guardian_phone") || !v("address")){
-      status.innerHTML = `<span class="bad">강아지 이름 / 보호자 번호는 필수입니다.</span>`;
-      return;
+  status.innerHTML = `<span class="bad">강아지 이름 / 보호자 번호 / 주소는 필수입니다.</span>`;
+  return;
     }
     if(!hasStroke){
       status.innerHTML = `<span class="bad">서명 후 제출해주세요.</span>`;
@@ -202,7 +202,7 @@
       notes: v("notes"),
       sns_consent: c("sns_consent"),
       separation_request: c("separation_request"),
-      signature_png_base64: signature
+      signature_png_base64: signature,
       address: v("address"),
 
     };
@@ -226,4 +226,5 @@
 </script>
 </body>
 </html>
+
 
