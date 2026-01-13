@@ -44,7 +44,6 @@
           <option value="유치원">유치원</option>
           <option value="호텔">호텔</option>
           <option value="놀이방">놀이방</option>
-          <option value="유치원 + 호텔">유치원 + 호텔</option>
         </select>
       </div>
       <div>
@@ -73,8 +72,8 @@
   <div class="card">
     <h3 style="margin:0 0 8px">강아지 정보</h3>
     <div class="row two">
-      <div><label>이름 *</label><input id="dog_name" placeholder="예: 소니" autocomplete="off"></div>
-      <div><label>견종</label><input id="breed" placeholder="예: 포메라니안" autocomplete="off"></div>
+      <div><label>이름 *</label><input id="dog_name" placeholder="예: 몽숙" autocomplete="off"></div>
+      <div><label>견종</label><input id="breed" placeholder="예: 버니두들" autocomplete="off"></div>
     </div>
     <div class="row two">
       <div><label>생년월일</label><input id="birth" placeholder="예: 2023-05-01" autocomplete="off"></div>
@@ -300,7 +299,7 @@
       // ✅ 무조건 버튼 표시
       status.innerHTML =
         `<div class="ok">저장 완료! 감사합니다 🙂</div>` +
-        `<div class="small">${copied ? "안내문이 복사됐어요. 아래 버튼 눌러서 카톡에 붙여넣기 하면 돼." : "복사 권한이 막혀있을 수 있어. 아래 버튼 눌러서 카톡 이동 후 직접 붙여넣기 해줘."}</div>` +
+        `<div class="small">${copied ? "안내문이 복사됐어요. 아래 버튼 눌러서 카톡에 붙여넣기 해주세요." : "복사 권한이 막혀있을 수 있습니다. 아래 버튼 눌러서 카톡 이동 후 직접 붙여넣기 해주세요."}</div>` +
         `<div style="margin-top:10px;">
           <a class="kbtn" href="${KAKAO_CHAT_URL}" target="_blank" rel="noopener">카톡(오픈채팅)으로 이동</a>
         </div>`;
@@ -317,3 +316,4 @@
 </script>
 </body>
 </html>
+
