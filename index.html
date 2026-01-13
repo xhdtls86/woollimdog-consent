@@ -223,14 +223,55 @@
       status.innerHTML = `<span class="bad">오류:</span> ${e.message}`;
     }
   };
-</script>
+<script>
   const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyEaP9cvyCXisdyZo2SedV0LZUTnH_yTEBNHF0nS7Ww3mwfBn9cq9ftyrqt3UZ3Mxt0/exec";
+  const KAKAO_CHAT_URL = "https://open.kakao.com/o/sXUbi6ai";
 
-  // ✅ 여기만 너 링크로 바꿔
-  const KAKAO_CHAT_URL = "https://open.kakao.com/o/sXUbi6ai"; // 채널 1:1 채팅 링크
+  // --- Signature pad ---
+  const canvas = document.getElementById("sig");
+  const ctx = canvas.getContext("2d");
+  let drawing = false, hasStroke = false;
+
+  function resizeCanvas(){
+    const rect = canvas.getBoundingClientRect();
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = Math.floor(rect.width * dpr);
+    canvas.height = Math.floor(180 * dpr);
+    canvas.style.height = "180px";
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    ctx.lineWidth = 3;
+    ctx.lineCap = "round";
+    ctx.strokeStyle = "#111827";
+  }
+  resizeCanvas();
+  window.addEventListener("resize", () => location.reload());
+
+  function pos(e){
+    const r = canvas.getBoundingClientRect();
+    const t = e.touches ? e.touches[0] : e;
+    return { x: t.clientX - r.left, y: t.clientY - r.top };
+  }
+  function start(e){ drawing = true; hasStroke = true; const p = pos(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); e.preventDefault(); }
+  function move(e){ if(!drawing) return; const p = pos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); e.preventDefault(); }
+  function end(){ drawing = false; }
+
+  canvas.addEventListener("mousedown", start);
+  canvas.addEventListener("mousemove", move);
+  window.addEventListener("mouseup", end);
+  canvas.addEventListener("touchstart", start, {passive:false});
+  canvas.addEventListener("touchmove", move, {passive:false});
+  canvas.addEventListener("touchend", end);
+
+  document.getElementById("clearSig").onclick = () => {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    hasStroke = false;
+    document.getElementById("status").innerHTML = `<span class="bad">서명이 지워졌습니다.</span>`;
+  };
+
+  function v(id){ return document.getElementById(id).value.trim(); }
+  function c(id){ return document.getElementById(id).checked; }
 
   function buildKakaoMessage(p, saved){
-    // saved.signature_file_url 있으면 같이 넣기
     const sig = saved?.signature_file_url ? `\n서명파일: ${saved.signature_file_url}` : "";
     return `안녕하세요! 잘어울리개입니다 😊
 동의서/예약 작성이 완료되었습니다.
@@ -269,7 +310,6 @@
       await navigator.clipboard.writeText(text);
       return true;
     }catch(e){
-      // 구형 브라우저 fallback
       const ta = document.createElement("textarea");
       ta.value = text;
       document.body.appendChild(ta);
@@ -279,8 +319,6 @@
       return ok;
     }
   }
-
-  // ... (기존 코드 그대로)
 
   document.getElementById("submitBtn").onclick = async () => {
     const status = document.getElementById("status");
@@ -330,20 +368,21 @@
       const data = await res.json();
       if(!data.ok) throw new Error(data.message || "저장 실패");
 
-      // ✅ 안내문 자동 생성 + 복사 + 카톡 이동
       const msg = buildKakaoMessage(payload, data);
       const copied = await copyToClipboard(msg);
 
       status.innerHTML =
         `<span class="ok">저장 완료!</span> ` +
-        (copied ? `안내문이 복사됐어요. 카톡으로 이동합니다 🙂` : `저장 완료! 아래 버튼으로 카톡 이동 후 붙여넣기 해주세요 🙂`) +
+        (copied ? `안내문이 복사됐어요. 아래 버튼을 눌러 카톡으로 이동해주세요 🙂` : `저장 완료! 아래 버튼으로 카톡 이동 후 붙여넣기 해주세요 🙂`) +
         `<div style="margin-top:10px;">
-          <a href="${KAKAO_CHAT_URL}" target="_blank" style="display:inline-block;padding:12px 14px;border-radius:12px;background:#22c55e;color:#fff;font-weight:900;text-decoration:none;">
-            카톡(채널/오픈채팅)으로 이동
+          <a href="${KAKAO_CHAT_URL}" target="_blank" rel="noopener"
+             style="display:inline-block;padding:12px 14px;border-radius:12px;background:#22c55e;color:#fff;font-weight:900;text-decoration:none;">
+            오픈카톡으로 이동
           </a>
         </div>`;
 
-      // 복사가 됐으면 자동 이동(새 탭)
+      // ⚠️ 자동 팝업은 브라우저가 막을 수 있어서 버튼은 항상 보여주고,
+      // 복사가 성공했을 때만 '시도'를 해본다.
       if(copied){
         window.open(KAKAO_CHAT_URL, "_blank");
       }
@@ -355,6 +394,7 @@
 </script>
 </body>
 </html>
+
 
 
 
