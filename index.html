@@ -1,158 +1,319 @@
 <!doctype html>
 <html lang="ko">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>잘어울리개 동의서</title>
-
-<style>
-body{font-family:system-ui,-apple-system,"Noto Sans KR",sans-serif;margin:0;background:#f6f7fb;color:#111}
-.wrap{max-width:860px;margin:0 auto;padding:16px}
-.card{background:#fff;border-radius:14px;padding:16px;margin:12px 0;box-shadow:0 1px 4px rgba(0,0,0,.05)}
-label{display:block;font-size:13px;margin-top:10px}
-input,select,textarea{width:100%;padding:12px;border-radius:10px;border:1px solid #ddd;margin-top:4px}
-textarea{min-height:80px}
-.row{display:grid;grid-template-columns:1fr;gap:10px}
-@media(min-width:600px){.row.two{grid-template-columns:1fr 1fr}}
-canvas{width:100%;height:180px;border:1px dashed #ccc;border-radius:12px}
-button{padding:12px 14px;border-radius:10px;border:none;font-weight:700;cursor:pointer}
-.primary{background:#22c55e;color:#fff}
-.status{margin-top:10px;font-weight:700}
-.ok{color:#16a34a}
-.bad{color:#b91c1c}
-</style>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>잘어울리개 동의서</title>
+  <style>
+    body{font-family:system-ui,-apple-system,"Noto Sans KR",sans-serif;margin:0;background:#f6f7fb;color:#111827}
+    .wrap{max-width:860px;margin:0 auto;padding:16px}
+    .card{background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:16px;margin:12px 0}
+    label{display:block;font-size:12px;color:#6b7280;margin:10px 0 6px}
+    input,select,textarea{width:100%;padding:12px;border:1px solid #e5e7eb;border-radius:12px;font-size:14px;box-sizing:border-box}
+    textarea{min-height:90px;resize:vertical}
+    .row{display:grid;grid-template-columns:1fr;gap:10px}
+    @media(min-width:640px){.row.two{grid-template-columns:1fr 1fr}}
+    .sigbox{border:1px dashed #cbd5e1;border-radius:12px;overflow:hidden;background:#fafafa}
+    canvas{width:100%;height:180px;touch-action:none}
+    .btns{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+    button{padding:12px 14px;border-radius:12px;border:1px solid #e5e7eb;background:#fff;font-weight:800;cursor:pointer}
+    button.primary{background:#22c55e;border-color:#22c55e;color:#fff}
+    .status{font-size:13px;margin-top:10px;line-height:1.5}
+    .ok{color:#16a34a;font-weight:900}
+    .bad{color:#b45309;font-weight:900}
+    .kbtn{display:inline-block;padding:12px 14px;border-radius:12px;background:#22c55e;color:#fff;font-weight:900;text-decoration:none}
+    .small{color:#6b7280;font-size:12px;margin-top:6px}
+  </style>
 </head>
-
 <body>
 <div class="wrap">
+  <div class="card">
+    <h2 style="margin:0 0 8px">잘어울리개 유치원 및 호텔 동의서</h2>
+    <div style="color:#6b7280;font-size:13px;line-height:1.5">
+      입력 후 제출하면 자동 저장됩니다. (서명 포함)
+    </div>
+  </div>
 
-<div class="card">
-<h2>잘어울리개 동의서</h2>
-</div>
+  <div class="card">
+    <h3 style="margin:0 0 8px">예약 기본정보</h3>
+    <div class="row two">
+      <div>
+        <label>서비스</label>
+        <select id="service" autocomplete="off">
+          <option value="" selected>선택</option>
+          <option value="유치원">유치원</option>
+          <option value="호텔">호텔</option>
+          <option value="놀이방">놀이방</option>
+          <option value="유치원 + 호텔">유치원 + 호텔</option>
+        </select>
+      </div>
+      <div>
+        <label>몸무게 구간</label>
+        <select id="weight_band" autocomplete="off">
+          <option value="" selected>선택</option>
+          <option value="5kg미만">5kg미만</option>
+          <option value="13kg미만">13kg미만</option>
+          <option value="13kg이상(별도문의)">13kg이상(별도문의)</option>
+        </select>
+      </div>
+    </div>
 
-<div class="card">
-<h3>예약 정보</h3>
-<div class="row two">
-<select id="service">
-<option value="">서비스 선택</option>
-<option>유치원</option>
-<option>호텔</option>
-<option>놀이방</option>
-<option>유치원+호텔</option>
-</select>
-<select id="weight_band">
-<option value="">몸무게</option>
-<option>5kg미만</option>
-<option>13kg미만</option>
-<option>13kg이상</option>
-</select>
-</div>
-<div class="row two">
-<input id="start_dt" type="datetime-local">
-<input id="end_dt" type="datetime-local">
-</div>
-</div>
+    <div class="row two">
+      <div>
+        <label>맡기는 날짜/시간</label>
+        <input id="start_dt" type="datetime-local" autocomplete="off">
+      </div>
+      <div>
+        <label>데려가는 날짜/시간</label>
+        <input id="end_dt" type="datetime-local" autocomplete="off">
+      </div>
+    </div>
+  </div>
 
-<div class="card">
-<h3>강아지</h3>
-<input id="dog_name" placeholder="이름 *">
-<input id="breed" placeholder="견종">
-<input id="birth" placeholder="생년월일">
-<select id="sex"><option value="">성별</option><option>암</option><option>수</option></select>
-<select id="neutered"><option value="">중성화</option><option>예</option><option>아니오</option></select>
-<input id="allergy" placeholder="알러지">
-<input id="potty" placeholder="배변">
-<input id="social" placeholder="사회성">
-<textarea id="care_points" placeholder="케어 포인트"></textarea>
-</div>
+  <div class="card">
+    <h3 style="margin:0 0 8px">강아지 정보</h3>
+    <div class="row two">
+      <div><label>이름 *</label><input id="dog_name" placeholder="예: 소니" autocomplete="off"></div>
+      <div><label>견종</label><input id="breed" placeholder="예: 포메라니안" autocomplete="off"></div>
+    </div>
+    <div class="row two">
+      <div><label>생년월일</label><input id="birth" placeholder="예: 2023-05-01" autocomplete="off"></div>
+      <div><label>성별</label>
+        <select id="sex" autocomplete="off">
+          <option value="" selected>선택</option>
+          <option value="암">암</option>
+          <option value="수">수</option>
+        </select>
+      </div>
+    </div>
+    <div class="row two">
+      <div><label>중성화 여부</label>
+        <select id="neutered" autocomplete="off">
+          <option value="" selected>선택</option>
+          <option value="예">예</option>
+          <option value="아니오">아니오</option>
+        </select>
+      </div>
+      <div><label>알러지 유무</label><input id="allergy" placeholder="없음 / 닭 알러지 등" autocomplete="off"></div>
+    </div>
+    <label>배변(마킹) 습관</label><input id="potty" placeholder="예: 실내패드 / 실외만 / 마킹 있음" autocomplete="off">
+    <label>사회성</label><input id="social" placeholder="예: 낯가림 / 활발 / 소형견만 좋아함" autocomplete="off">
+    <label>케어 필요한 부분</label><textarea id="care_points" placeholder="예: 분리불안, 짖음, 공격성, 약 복용 등" autocomplete="off"></textarea>
+  </div>
 
-<div class="card">
-<h3>보호자</h3>
-<input id="guardian_phone" placeholder="보호자 연락처 *">
-<input id="delegate_phone" placeholder="대리인 번호">
-<input id="address" placeholder="주소 *">
-<textarea id="notes" placeholder="특이사항"></textarea>
-</div>
+  <div class="card">
+    <h3 style="margin:0 0 8px">보호자 정보</h3>
+    <div class="row two">
+      <div><label>휴대폰번호 *</label><input id="guardian_phone" placeholder="010-1234-5678" autocomplete="off"></div>
+      <div><label>대리인번호(선택)</label><input id="delegate_phone" placeholder="010-0000-0000" autocomplete="off"></div>
+    </div>
+    <label>주소 *</label>
+    <input id="address" placeholder="예: 인천 서구 염곡로498번안길 16-1 (상세주소 포함)" autocomplete="off">
+    <label>특이사항(선택)</label><textarea id="notes" placeholder="추가 요청사항" autocomplete="off"></textarea>
+  </div>
 
-<div class="card">
-<label><input type="checkbox" id="sns_consent" checked> SNS 업로드 동의</label>
-<label><input type="checkbox" id="separation_request"> 분리 요청</label>
-</div>
+  <div class="card">
+    <h3 style="margin:0 0 8px">동의 항목</h3>
+    <label><input type="checkbox" id="sns_consent" checked> 사진/영상 SNS 업로드에 동의합니다 (해제 가능)</label>
+    <label><input type="checkbox" id="separation_request"> 분리 요청(필요 시)</label>
+  </div>
 
-<div class="card">
-<h3>서명</h3>
-<canvas id="sig"></canvas>
-<br>
-<button id="clearSig">서명 지우기</button>
-<button class="primary" id="submitBtn">제출(자동저장)</button>
-<div id="status" class="status"></div>
-</div>
-
+  <div class="card">
+    <h3 style="margin:0 0 8px">서명 *</h3>
+    <div class="sigbox">
+      <canvas id="sig"></canvas>
+    </div>
+    <div class="btns">
+      <button type="button" id="clearSig">서명 지우기</button>
+      <button type="button" class="primary" id="submitBtn">제출(자동 저장)</button>
+    </div>
+    <div class="status" id="status"></div>
+  </div>
 </div>
 
 <script>
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyEaP9cvyCXisdyZo2SedV0LZUTnH_yTEBNHF0nS7Ww3mwfBn9cq9ftyrqt3UZ3Mxt0/exec";
-const KAKAO_CHAT_URL = "https://open.kakao.com/o/sXUbi6ai";
+  // ✅ 네 웹앱 URL
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyEaP9cvyCXisdyZo2SedV0LZUTnH_yTEBNHF0nS7Ww3mwfBn9cq9ftyrqt3UZ3Mxt0/exec";
 
-const canvas=document.getElementById("sig");
-const ctx=canvas.getContext("2d");
-let drawing=false,hasStroke=false;
+  // ✅ 카톡 오픈채팅 링크
+  const KAKAO_CHAT_URL = "https://open.kakao.com/o/sXUbi6ai";
 
-function resize(){
-canvas.width=canvas.offsetWidth;
-canvas.height=180;
-ctx.lineWidth=3;
-ctx.lineCap="round";
-}
-resize();
-window.onresize=resize;
+  // ---- Signature pad ----
+  const canvas = document.getElementById("sig");
+  const ctx = canvas.getContext("2d");
+  let drawing = false, hasStroke = false;
 
-function pos(e){
-const r=canvas.getBoundingClientRect();
-const t=e.touches?e.touches[0]:e;
-return{x:t.clientX-r.left,y:t.clientY-r.top};
-}
+  function resizeCanvas(){
+    const rect = canvas.getBoundingClientRect();
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = Math.floor(rect.width * dpr);
+    canvas.height = Math.floor(180 * dpr);
+    canvas.style.height = "180px";
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    ctx.lineWidth = 3;
+    ctx.lineCap = "round";
+    ctx.strokeStyle = "#111827";
+  }
+  resizeCanvas();
 
-canvas.onmousedown=e=>{drawing=true;hasStroke=true;let p=pos(e);ctx.beginPath();ctx.moveTo(p.x,p.y);}
-canvas.onmousemove=e=>{if(!drawing)return;let p=pos(e);ctx.lineTo(p.x,p.y);ctx.stroke();}
-window.onmouseup=()=>drawing=false;
-canvas.ontouchstart=e=>{e.preventDefault();drawing=true;hasStroke=true;let p=pos(e);ctx.beginPath();ctx.moveTo(p.x,p.y);}
-canvas.ontouchmove=e=>{e.preventDefault();if(!drawing)return;let p=pos(e);ctx.lineTo(p.x,p.y);ctx.stroke();}
-canvas.ontouchend=()=>drawing=false;
+  function pos(e){
+    const r = canvas.getBoundingClientRect();
+    const t = e.touches ? e.touches[0] : e;
+    return { x: t.clientX - r.left, y: t.clientY - r.top };
+  }
+  function start(e){ drawing = true; hasStroke = true; const p = pos(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); e.preventDefault(); }
+  function move(e){ if(!drawing) return; const p = pos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); e.preventDefault(); }
+  function end(){ drawing = false; }
 
-clearSig.onclick=()=>{ctx.clearRect(0,0,canvas.width,canvas.height);hasStroke=false;}
+  canvas.addEventListener("mousedown", start);
+  canvas.addEventListener("mousemove", move);
+  window.addEventListener("mouseup", end);
+  canvas.addEventListener("touchstart", start, {passive:false});
+  canvas.addEventListener("touchmove", move, {passive:false});
+  canvas.addEventListener("touchend", end);
 
-function v(id){return document.getElementById(id).value.trim();}
-function c(id){return document.getElementById(id).checked;}
+  document.getElementById("clearSig").onclick = () => {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    hasStroke = false;
+    document.getElementById("status").innerHTML = `<span class="bad">서명이 지워졌습니다.</span>`;
+  };
 
-submitBtn.onclick=async()=>{
-const status=document.getElementById("status");
-if(!v("dog_name")||!v("guardian_phone")||!v("address")){status.innerHTML="<span class='bad'>필수항목 누락</span>";return;}
-if(!hasStroke){status.innerHTML="<span class='bad'>서명 필요</span>";return;}
+  function v(id){ return document.getElementById(id).value.trim(); }
+  function c(id){ return document.getElementById(id).checked; }
 
-const payload={
-service:v("service"),weight_band:v("weight_band"),
-start_dt:v("start_dt"),end_dt:v("end_dt"),
-dog_name:v("dog_name"),breed:v("breed"),birth:v("birth"),
-sex:v("sex"),neutered:v("neutered"),allergy:v("allergy"),
-potty:v("potty"),social:v("social"),care_points:v("care_points"),
-guardian_phone:v("guardian_phone"),delegate_phone:v("delegate_phone"),
-address:v("address"),notes:v("notes"),
-sns_consent:c("sns_consent"),separation_request:c("separation_request"),
-signature_png_base64:canvas.toDataURL("image/png")
-};
+  function buildKakaoMessage(p, saved){
+    const sig = saved?.signature_file_url ? `\n서명파일: ${saved.signature_file_url}` : "";
+    return `안녕하세요! 잘어울리개입니다 😊
+동의서/예약 작성이 완료되었습니다.
 
-status.textContent="저장중...";
-const res=await fetch(SCRIPT_URL,{method:"POST",headers:{"Content-Type":"text/plain"},body:JSON.stringify(payload)});
-const data=await res.json();
-if(!data.ok){status.innerHTML="<span class='bad'>저장 실패</span>";return;}
+[예약]
+- 서비스: ${p.service || "-"}
+- 몸무게: ${p.weight_band || "-"}
+- 맡기는 날짜/시간: ${p.start_dt || "-"}
+- 데려가는 날짜/시간: ${p.end_dt || "-"}
 
-let msg=`잘어울리개 예약 완료\n이름:${payload.dog_name}\n전화:${payload.guardian_phone}\n주소:${payload.address}`;
-await navigator.clipboard.writeText(msg);
-window.open(KAKAO_CHAT_URL,"_blank");
-status.innerHTML="<span class='ok'>저장 완료! 카톡으로 이동합니다</span>";
-};
+[강아지]
+- 이름: ${p.dog_name || "-"}
+- 견종: ${p.breed || "-"}
+- 생년월일: ${p.birth || "-"}
+- 성별: ${p.sex || "-"}
+- 중성화: ${p.neutered || "-"}
+- 알러지: ${p.allergy || "-"}
+- 배변/마킹: ${p.potty || "-"}
+- 사회성: ${p.social || "-"}
+- 케어 포인트: ${p.care_points || "-"}
+
+[보호자]
+- 연락처: ${p.guardian_phone || "-"}
+- 대리인: ${p.delegate_phone || "-"}
+- 주소: ${p.address || "-"}
+
+[동의]
+- SNS 업로드 동의: ${p.sns_consent ? "동의" : "미동의"}
+- 분리 요청: ${p.separation_request ? "요청" : "없음"}
+
+특이사항: ${p.notes || "-"}` + sig;
+  }
+
+  async function copyToClipboard(text){
+    try{
+      await navigator.clipboard.writeText(text);
+      return true;
+    }catch(e){
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      const ok = document.execCommand("copy");
+      document.body.removeChild(ta);
+      return ok;
+    }
+  }
+
+  // ✅ 페이지 열릴 때 값 자동 채움 방지(캐시/자동완성 대응)
+  window.addEventListener("pageshow", () => {
+    try{
+      ["service","weight_band","start_dt","end_dt","dog_name","breed","birth","sex","neutered","allergy","potty","social","care_points","guardian_phone","delegate_phone","address","notes"]
+        .forEach(id => {
+          const el = document.getElementById(id);
+          if(!el) return;
+          if(el.tagName === "SELECT") el.value = "";
+          else el.value = "";
+        });
+      document.getElementById("sns_consent").checked = true;
+      document.getElementById("separation_request").checked = false;
+    }catch(_){}
+  });
+
+  document.getElementById("submitBtn").onclick = async () => {
+    const status = document.getElementById("status");
+
+    if(!v("dog_name") || !v("guardian_phone") || !v("address")){
+      status.innerHTML = `<span class="bad">강아지 이름 / 보호자 번호 / 주소는 필수입니다.</span>`;
+      return;
+    }
+    if(!hasStroke){
+      status.innerHTML = `<span class="bad">서명 후 제출해주세요.</span>`;
+      return;
+    }
+
+    const signature = canvas.toDataURL("image/png");
+
+    const payload = {
+      service: v("service"),
+      weight_band: v("weight_band"),
+      start_dt: v("start_dt") ? v("start_dt").replace("T"," ") : "",
+      end_dt: v("end_dt") ? v("end_dt").replace("T"," ") : "",
+      dog_name: v("dog_name"),
+      breed: v("breed"),
+      birth: v("birth"),
+      sex: v("sex"),
+      neutered: v("neutered"),
+      allergy: v("allergy"),
+      potty: v("potty"),
+      social: v("social"),
+      care_points: v("care_points"),
+      guardian_phone: v("guardian_phone"),
+      delegate_phone: v("delegate_phone"),
+      address: v("address"),
+      notes: v("notes"),
+      sns_consent: c("sns_consent"),
+      separation_request: c("separation_request"),
+      signature_png_base64: signature
+    };
+
+    try{
+      status.textContent = "저장 중...";
+      const res = await fetch(SCRIPT_URL, {
+        method:"POST",
+        headers:{ "Content-Type":"text/plain;charset=utf-8" },
+        body: JSON.stringify(payload)
+      });
+
+      const data = await res.json();
+      if(!data.ok) throw new Error(data.message || "저장 실패");
+
+      // ✅ 안내문 생성 → 복사
+      const msg = buildKakaoMessage(payload, data);
+      const copied = await copyToClipboard(msg);
+
+      // ✅ 무조건 버튼 표시
+      status.innerHTML =
+        `<div class="ok">저장 완료! 감사합니다 🙂</div>` +
+        `<div class="small">${copied ? "안내문이 복사됐어요. 아래 버튼 눌러서 카톡에 붙여넣기 하면 돼." : "복사 권한이 막혀있을 수 있어. 아래 버튼 눌러서 카톡 이동 후 직접 붙여넣기 해줘."}</div>` +
+        `<div style="margin-top:10px;">
+          <a class="kbtn" href="${KAKAO_CHAT_URL}" target="_blank" rel="noopener">카톡(오픈채팅)으로 이동</a>
+        </div>`;
+
+      // ✅ 복사 성공했으면 자동으로 새 탭 열기(브라우저 정책상 막힐 수 있음)
+      if(copied){
+        window.open(KAKAO_CHAT_URL, "_blank", "noopener");
+      }
+
+    }catch(e){
+      status.innerHTML = `<span class="bad">오류:</span> ${e.message}`;
+    }
+  };
 </script>
-
 </body>
 </html>
