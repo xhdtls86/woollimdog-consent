@@ -224,7 +224,137 @@
     }
   };
 </script>
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyEaP9cvyCXisdyZo2SedV0LZUTnH_yTEBNHF0nS7Ww3mwfBn9cq9ftyrqt3UZ3Mxt0/exec";
+
+  // ✅ 여기만 너 링크로 바꿔
+  const KAKAO_CHAT_URL = "https://open.kakao.com/o/sXUbi6ai"; // 채널 1:1 채팅 링크
+
+  function buildKakaoMessage(p, saved){
+    // saved.signature_file_url 있으면 같이 넣기
+    const sig = saved?.signature_file_url ? `\n서명파일: ${saved.signature_file_url}` : "";
+    return `안녕하세요! 잘어울리개입니다 😊
+동의서/예약 작성이 완료되었습니다.
+
+[예약]
+- 서비스: ${p.service || "-"}
+- 몸무게: ${p.weight_band || "-"}
+- 맡기는 날짜/시간: ${p.start_dt || "-"}
+- 데려가는 날짜/시간: ${p.end_dt || "-"}
+
+[강아지]
+- 이름: ${p.dog_name || "-"}
+- 견종: ${p.breed || "-"}
+- 생년월일: ${p.birth || "-"}
+- 성별: ${p.sex || "-"}
+- 중성화: ${p.neutered || "-"}
+- 알러지: ${p.allergy || "-"}
+- 배변/마킹: ${p.potty || "-"}
+- 사회성: ${p.social || "-"}
+- 케어 포인트: ${p.care_points || "-"}
+
+[보호자]
+- 연락처: ${p.guardian_phone || "-"}
+- 대리인: ${p.delegate_phone || "-"}
+- 주소: ${p.address || "-"}
+
+[동의]
+- SNS 업로드 동의: ${p.sns_consent ? "동의" : "미동의"}
+- 분리 요청: ${p.separation_request ? "요청" : "없음"}
+
+특이사항: ${p.notes || "-"}` + sig;
+  }
+
+  async function copyToClipboard(text){
+    try{
+      await navigator.clipboard.writeText(text);
+      return true;
+    }catch(e){
+      // 구형 브라우저 fallback
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      const ok = document.execCommand("copy");
+      document.body.removeChild(ta);
+      return ok;
+    }
+  }
+
+  // ... (기존 코드 그대로)
+
+  document.getElementById("submitBtn").onclick = async () => {
+    const status = document.getElementById("status");
+
+    if(!v("dog_name") || !v("guardian_phone") || !v("address")){
+      status.innerHTML = `<span class="bad">강아지 이름 / 보호자 번호 / 주소는 필수입니다.</span>`;
+      return;
+    }
+    if(!hasStroke){
+      status.innerHTML = `<span class="bad">서명 후 제출해주세요.</span>`;
+      return;
+    }
+
+    const signature = canvas.toDataURL("image/png");
+
+    const payload = {
+      service: v("service"),
+      weight_band: v("weight_band"),
+      start_dt: v("start_dt") ? v("start_dt").replace("T"," ") : "",
+      end_dt: v("end_dt") ? v("end_dt").replace("T"," ") : "",
+      dog_name: v("dog_name"),
+      breed: v("breed"),
+      birth: v("birth"),
+      sex: v("sex"),
+      neutered: v("neutered"),
+      allergy: v("allergy"),
+      potty: v("potty"),
+      social: v("social"),
+      care_points: v("care_points"),
+      guardian_phone: v("guardian_phone"),
+      delegate_phone: v("delegate_phone"),
+      address: v("address"),
+      notes: v("notes"),
+      sns_consent: c("sns_consent"),
+      separation_request: c("separation_request"),
+      signature_png_base64: signature
+    };
+
+    try{
+      status.textContent = "저장 중...";
+      const res = await fetch(SCRIPT_URL, {
+        method:"POST",
+        headers:{ "Content-Type":"text/plain;charset=utf-8" },
+        body: JSON.stringify(payload)
+      });
+
+      const data = await res.json();
+      if(!data.ok) throw new Error(data.message || "저장 실패");
+
+      // ✅ 안내문 자동 생성 + 복사 + 카톡 이동
+      const msg = buildKakaoMessage(payload, data);
+      const copied = await copyToClipboard(msg);
+
+      status.innerHTML =
+        `<span class="ok">저장 완료!</span> ` +
+        (copied ? `안내문이 복사됐어요. 카톡으로 이동합니다 🙂` : `저장 완료! 아래 버튼으로 카톡 이동 후 붙여넣기 해주세요 🙂`) +
+        `<div style="margin-top:10px;">
+          <a href="${KAKAO_CHAT_URL}" target="_blank" style="display:inline-block;padding:12px 14px;border-radius:12px;background:#22c55e;color:#fff;font-weight:900;text-decoration:none;">
+            카톡(채널/오픈채팅)으로 이동
+          </a>
+        </div>`;
+
+      // 복사가 됐으면 자동 이동(새 탭)
+      if(copied){
+        window.open(KAKAO_CHAT_URL, "_blank");
+      }
+
+    }catch(e){
+      status.innerHTML = `<span class="bad">오류:</span> ${e.message}`;
+    }
+  };
+</script>
 </body>
 </html>
+
 
 
